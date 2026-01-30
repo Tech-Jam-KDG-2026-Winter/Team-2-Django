@@ -1,4 +1,184 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <link rel="stylesheet" href="{% static 'app/style.css' %}">
 
-<h1>トップ画面</h1>
+  <title>Top Page</title>
 
-<h1>ようこそ</h1>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    .phone {
+      width: 390px;
+      height: 780px;
+      background: #2e343b;
+      border-radius: 32px;
+      position: relative;
+      padding: 24px 16px;
+      color: #ffe84a;
+    }
+
+    .menu-icon {
+      position: absolute;
+      top: 18px;
+      left: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .menu-icon span {
+      width: 36px;
+      height: 6px;
+      background: #ffe84a;
+      border-radius: 4px;
+    }
+
+    /* ===== 中央ブロック ===== */
+
+    .center-box {
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      width: 100%;
+      pointer-events: none;
+    }
+
+    .title {
+      font-size: 28px;
+      font-weight: 700;
+      text-shadow: 0 0 12px rgba(255,232,74,.6);
+      margin: 0;
+    }
+
+    .time {
+      margin-top: 12px;
+      font-weight: 800;
+      text-shadow: 0 0 20px rgba(255,232,74,.8);
+      line-height: 1;
+    }
+
+    .num {
+      font-size: 96px;
+      line-height: 1;
+    }
+
+    .unit {
+      font-size: 32px;
+    }
+
+    /* ===== 家＋吹き出し ===== */
+
+    .item {
+      position: absolute;
+      text-align: center;
+    }
+
+    .house {
+      width: 70px;
+      height: 48px;
+      background: #ffe84a;
+      margin: 50px auto 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .house::before {
+      content: "";
+      position: absolute;
+      top: -36px;
+      left: -10px;
+      width: 0;
+      height: 0;
+      border-left: 45px solid transparent;
+      border-right: 45px solid transparent;
+      border-bottom: 36px solid #ffe84a;
+    }
+
+    .bubble {
+      background: #eee;
+      color: #000;
+      font-weight: bold;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 16px;
+      margin-bottom: 6px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .bubble::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -10px;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 10px solid #eee;
+    }
+
+    /* ===== 家の配置 ===== */
+
+    .item.top    { top: 90px; right: 46px; }
+    .item.left   { bottom: 260px; left: 40px; }
+    .item.bottom { bottom: 120px; right: 50px; }
+
+  </style>
+
+  
+</head>
+
+<body>
+
+<div class="phone">
+
+  <div class="menu-icon">
+    <span></span><span></span><span></span>
+  </div>
+
+  <!-- 中央表示 -->
+  <div class="center-box">
+    <div class="title">今月の<br>記録</div>
+    <div class="time">
+      <span class="num">00</span><br>
+      <span class="unit">h/min</span>
+    </div>
+  </div>
+
+  <!-- 家 + 吹き出し -->
+  <div class="item top">
+    <div class="bubble">7分</div>
+    <div class="house"></div>
+  </div>
+
+  <div class="item left">
+    <div class="bubble">3分</div>
+    <div class="house"></div>
+  </div>
+
+  <div class="item bottom">
+    <div class="bubble">10分</div>
+    <div class="house"></div>
+  </div>
+
+</div>
+
+</body>
+</html>
