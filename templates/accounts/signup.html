@@ -1,0 +1,9 @@
+{% extends "top.html" %} {% block content %}
+<h2>ユーザー登録</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">登録する</button>
+</form>
+<p><a href="{% url 'accounts:login' %}">ログインはこちら</a></p>
+{% endblock %}
