@@ -7,7 +7,7 @@ def top(request):
     context = {
 
     }
-    return render(request, 'top.html', context)
+    return render(request, 'machines.html', context)
 
 
 def route(request):
