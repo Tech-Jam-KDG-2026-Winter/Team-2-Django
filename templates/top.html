@@ -1,2 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Top Page{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/top.css' %}">
+{% endblock %}
+
 {% block content %}
+<div class="phone">
+
+  <div class="menu-icon">
+    <span></span><span></span><span></span>
+  </div>
+
+  <div class="center-box">
+    <div class="title">今月の<br>記録</div>
+    <div class="time">
+      <span class="num">00</span><br>
+      <span class="unit">h/min</span>
+    </div>
+  </div>
+
+  <div class="item top">
+    <div class="bubble">7分</div>
+    <div class="house"></div>
+  </div>
+
+  <div class="item left">
+    <div class="bubble">3分</div>
+    <div class="house"></div>
+  </div>
+
+  <div class="item bottom">
+    <div class="bubble">10分</div>
+    <div class="house"></div>
+  </div>
+
+</div>
 {% endblock %}
