@@ -1,0 +1,140 @@
+/* --- 全体設定 --- */
+body {
+    background-color: #dcdcdc; /* 画面全体をマシンの背景色に */
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+/* --- コンテナ（外枠なし・横幅いっぱい） --- */
+.iphone-mockup {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.screen {
+    width: 100%;
+    max-width: 1200px; /* PCでも広がりすぎないよう最大幅を設定 */
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+/* --- ヘッダー --- */
+header {
+    margin-bottom: 30px;
+}
+
+.header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.back-btn {
+    background: #333;
+    color: white;
+    padding: 6px 15px;
+    border-radius: 4px;
+    font-size: 14px;
+    clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 15% 100%, 0% 50%);
+}
+
+.shop-name {
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.title {
+    text-align: center;
+    font-size: 28px;
+    margin: 20px 0;
+}
+
+/* --- グリッド（レスポンシブ設定） --- */
+.machine-grid {
+    display: grid;
+    /* デフォルト（PC）は4列 */
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+/* --- タブレットサイズ（992px以下） --- */
+@media screen and (max-width: 992px) {
+    .machine-grid {
+        grid-template-columns: repeat(3, 1fr); /* 3列に */
+    }
+}
+
+/* --- スマホサイズ（600px以下） --- */
+@media screen and (max-width: 600px) {
+    .machine-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2列に */
+        gap: 12px;
+    }
+    
+    .title {
+        font-size: 24px;
+    }
+    
+    .screen {
+        padding: 20px 10px;
+    }
+}
+
+
+.machine-name {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 5px 0;
+    color: #333;
+}
+
+/* --- マシンカードのデザイン（共通） --- */
+.machine-card {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.difficulty {
+    align-self: flex-end;
+    font-weight: bold;
+    color: #555;
+    font-size: 18px;
+}
+
+.machine-img {
+    font-size: 60px;
+    margin: 15px 0;
+}
+
+.status {
+    width: 100%;
+    max-width: 140px;
+    text-align: center;
+    padding: 8px 0;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.available {
+    background-color: #dff0d8;
+    color: #3c763d;
+}
+
+.occupied {
+    background-color: #f2dede;
+    color: #a94442;
+}
+
+/* ノッチは全画面では不要なので非表示 */
+.notch {
+    display: none;
+}
