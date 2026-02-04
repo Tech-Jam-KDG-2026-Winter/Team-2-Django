@@ -1,222 +1,134 @@
-# TechJam Team-2 Django プロジェクト README
+# 📱 TIKAMITI（チカミチ）
+
+ジム利用者向けの **店舗検索・マシン空き状況確認・運動記録アプリ** です。  
+「近くて、空いている店舗を直感的に選べること」と  
+「無理なく運動記録を続けられること」を重視して設計しています。
+
+---
+
+## 🔍 アプリ概要
+
+- 現在地から近い店舗を地図風UIで表示
+- 店舗ごとの **マシン空き台数** を確認可能
+- マシン一覧画面で使用状況を視覚的に把握
+- ユーザーごとの **運動時間を日別・月別で記録**
+- 同日に複数回の運動も **加算方式で記録可能**
+- 会員登録 / ログイン機能あり
+
+---
+
+## 🎯 想定ユーザー
+
+- ジムに入会しているライトユーザー
+- 短時間（5〜30分程度）の運動を積み重ねたい人
+- 厳密な数値管理より「継続しやすさ」を重視する人
+
+※  
+1日に極端な運動時間を入力するようなケースは  
+本アプリの主なターゲットではありません。
+
+---
+
+## 🛠 使用技術
+
+### Backend
+- Python **3.12.4**
+- Django **5.1.2**
+- SQLite（開発環境）
+
+### Frontend
+- HTML / CSS / JavaScript（Vanilla）
+- Material Icons
+- スマホ前提のUI
 
 
-## 環境構築手順
+## 🧩 主な機能
 
-### 1. 仮想環境を作成・有効化
+###  店舗選択（トップ画面）
+
+- 店舗ピンをタップすると以下を同時に更新
+  - 店舗名
+  - 徒歩距離
+  - マシン空き台数
+- SVG + JavaScript による簡易ルート表示
+
+---
+
+###  マシン空き状況
+
+- 店舗ごとにマシン一覧を表示
+- 状態別カラー表示
+  - 空き：ネオンイエロー
+  - 使用中：レッド系
+- 管理・検証用として状態切り替え機能を実装
+
+---
+
+### 📝 運動記録
+
+- 日付と分数を入力して記録
+- 同日でも **加算方式** で記録可能
+- 非同期通信（fetch）を使用
+- 記録後は画面遷移せず数値のみアニメーション更新
+
+---
+
+### 👤 認証機能
+
+- Django標準認証をベースに実装
+- カスタムUserモデルを使用
+- サインアップ後は自動ログイン
+- ログイン / ログアウト対応
+
+---
+
+##  セットアップ方法
 
 ```bash
-python3 -m venv venv
+# 仮想環境作成
+python -m venv venv
 source venv/bin/activate
-```
 
-※ ターミナルの先頭に `(venv)` が表示されていればOKです。
-
----
-
-### 2. 依存関係をインストール
-
-```bash
+# 依存関係インストール
 pip install django python-dotenv
-```
+
+# マイグレーション
+python manage.py makemigrations
+python manage.py migrate
+
+# ダミーデータ投入
+python manage.py dummy_data
+
+# サーバー起動
+python manage.py runserver
 
 ---
 
-### 3. `.env` ファイルを作成（重要）
-
-プロジェクト直下  
-（`manage.py` と同じ階層）に `.env` ファイルを作成してください。
-
-```env
-SECRET_KEY=django-insecure-xxxxxxxxxxxxxxxx
-DEBUG=True
-```
-
-※ `SECRET_KEY` は各自適当な文字列でOK  
-※ `.env` は Git 管理しません
-
+## 📂 ディレクトリ構成（抜粋）
 ---
+techteam2/
+├── app/
+│   ├── models.py        # Store / Machine / ExerciseLog
+│   ├── views.py         # トップ・マシン一覧・運動記録API
+│   └── management/
+│       └── commands/
+│           └── dummy_data.py
+│
+├── accounts/
+│   ├── models.py        # カスタムUserモデル
+│   ├── forms.py         # サインアップ / ログインフォーム
+│   └── views.py
+│
+├── templates/
+│   ├── top.html
+│   ├── machines.html
+│   └── accounts/
+│       ├── login.html
+│       └── signup.html
+│
+├── static/
+│   ├── css/
+│   └── img/
+└── db.sqlite3
 
-### 4. 初期マイグレーション（必須）
 
-```bash
-python3 manage.py migrate
-```
-
----
-
-### 5. サーバー起動
-
-```bash
-
-python3 manage.py runserver
-
-```
-
-ブラウザで以下にアクセスしてください。
-
-```
-http://127.0.0.1:8000/
-```
-
----
-
-## ディレクトリ構成について（チームメンバー向け）
-
-### techteam2/
-
-プロジェクト全体の設定フォルダです。
-
-- settings.py  
-- urls.py  
-- wsgi.py  
-- asgi.py  
-
-🚨 **基本的に触らないでください！**  
-編集が必要な場合は、必ず事前に Slack でリーダーに相談してください。
-
----
-
-### app/
-
-アプリケーション本体のフォルダです。
-
-- views.py：画面の処理を書く  
-- urls.py：URLと画面を紐づける  
-- models.py：データ構造（必要な場合のみ）  
-
-👉 バックエンド担当は基本ここを触ります。
-
----
-
-### templates/
-
-HTML（画面）を置くフォルダです。
-
-- top.html  
-- route.html（※ 仮名。画面構成確定後に変更予定）
-
-👉 フロント担当・デザイン担当の主な作業場所です。
-
----
-
-### techteam2/static/
-
-CSS・画像などの見た目用ファイルを置くフォルダです。
-
-```text
-static/
-├── css/
-│   └── style.css
-└── img/
-```
-
-HTML から CSS を読み込むとき：
-
-```html
-
-{% load static %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
-
-```
-
----
-
-### db.sqlite3
-
-データベースファイルです。
-
-- SQLite 使用  
-- 基本触らなくてOK  
-- 削除・編集しないでください  
-- Git 管理しません  
-
----
-
-### manage.py
-
-Django を動かすためのコマンド用ファイルです。
-
-```bash
-
-python3 manage.py runserver
-
-```
-
----
-
-## 管理画面（スーパーユーザー）
-
-各自ローカル環境で作成してください。
-
-```bash
-
-python3 manage.py createsuperuser
-
-```
-
-管理画面：
-
-```
-http://127.0.0.1:8000/admin/
-```
-
-※ 共通アカウントは使用しません
-
----
-
-## Git 運用ルール（重要）
-
-### やること
-
-- clone する  
-- ブランチを作る  
-- 自分の担当コードを書く  
-- commit して push する  
-
-### やらないこと
-
-- main ブランチを直接触る  
-- 他人のブランチを merge する  
-- 他人のコードを勝手に直す  
-
-※ merge・コンフリクト対応はリーダーが行います。
-
----
-
-## Git コマンド（コピペ用）
-
-```bash
-
-git clone [githubのURL]
-cd [リポジトリ名]
-code .
-
-git switch -c feature-[自分の名前 or 機能名]
-
-git add .
-git commit -m "作業内容"
-git push origin feature-[ブランチ名]
-
-git branch
-```
-
----
-
-## まとめ（超重要）
-
-- HTML → templates/  
-- CSS・画像 → static/  
-- Python（処理） → app/  
-- 設定ファイル → techteam2/techteam2/（触らない）  
-
----
-
-## 困ったら
-
-- よく分からない  
-- 触っていい場所か不安  
-- 用語が分からない  
-
-👉 遠慮なく聞いてください。  
-質問＝ドキュメント改善なので大歓迎です！
