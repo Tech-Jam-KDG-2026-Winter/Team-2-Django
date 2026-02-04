@@ -1,0 +1,132 @@
+/* ===== Screen ===== */
+
+.auth-screen {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+}
+
+/* ===== Card ===== */
+
+.auth-card {
+  width: 100%;
+  max-width: 340px;
+  border-radius: 22px;
+  border: 1.5px solid var(--line);
+  background: rgba(255,255,255,0.04);
+  box-shadow: 0 18px 40px var(--shadow);
+  padding: 28px 22px 26px;
+}
+
+/* ===== Title ===== */
+
+.auth-title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: 0.08em;
+}
+
+.auth-subtitle {
+  margin: 6px 0 22px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+
+/* ===== Form ===== */
+
+.auth-form p {
+  margin: 0 0 12px;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-top: 6px;
+  border-radius: 16px;
+  border: 1px solid rgba(231,214,76,0.25);
+  background: rgba(0,0,0,0.22);
+  color: var(--white);
+  outline: none;
+  font-size: 14px;
+}
+
+.auth-form input:focus {
+  border-color: var(--line);
+  box-shadow: 0 0 0 4px rgba(231,214,76,0.18);
+}
+
+/* ===== Django help text ===== */
+
+.auth-form .helptext {
+  font-size: 10px;
+  line-height: 1.4;
+  color: rgba(242,224,76,0.55);
+}
+
+/* password list */
+.auth-form ul {
+  margin: 6px 0 10px;
+  padding-left: 14px;
+}
+
+.auth-form ul li {
+  font-size: 10px;
+  line-height: 1.4;
+  color: rgba(242,224,76,0.6);
+}
+
+/* ===== Button ===== */
+
+.auth-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+
+  width: 100%;
+  margin-top: 16px;
+  padding: 14px 0;
+  border-radius: 18px;
+
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+
+  background: linear-gradient(
+    180deg,
+    #fff6a5,
+    var(--line)
+  );
+  color: #222;
+  background-color: #e5d84c;
+
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.auth-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(231,214,76,0.45);
+}
+
+/* ===== Footer ===== */
+
+.auth-footer {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.auth-footer a {
+  color: var(--text);
+  text-decoration: underline;
+}

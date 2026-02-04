@@ -5,23 +5,23 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Store, Machine, ExerciseLog
 
-from datetime import timedelta
-
 
 def top(request):
     store = Store.objects.first()
 
     today = timezone.now().date()
-    start_of_week = today - timedelta(days=today.weekday())
+    start_of_month = today.replace(day=1)
 
-    weekly_minutes = ExerciseLog.objects.filter(
-        date__gte=start_of_week,
+    monthly_minutes = ExerciseLog.objects.filter(
+        user=request.user if request.user.is_authenticated else None,
+        date__gte=start_of_month,
         date__lte=today
     ).aggregate(total=Sum("minutes"))["total"] or 0
 
     context = {
         "store": store,
-        "total_exercise": weekly_minutes,
+        "total_exercise": monthly_minutes,
+        "today": today,
     }
     return render(request, "top.html", context)
 
@@ -31,51 +31,62 @@ def menu(request):
 
 
 def machine_list(request):
-    machines = Machine.objects.select_related("store").all()
-    return render(request, "machines.html", {"machines": machines})
+    store_key = request.GET.get("store", "gotanda")
 
+    store_map = {
+        "gotanda": "五反田店",
+        "meguro": "目黒店",
+        "osaki": "大崎店",
+    }
+
+    store_name = store_map.get(store_key, "五反田店")
+    store = get_object_or_404(Store, name=store_name)
+
+    machines = (
+        Machine.objects
+        .filter(store=store)
+        .order_by("status", "name")
+    )
+
+    available_count = machines.filter(status="available").count()
+    busy_count = machines.filter(status="busy").count()
+
+    context = {
+        "store": store,
+        "machines": machines,
+        "store_key": store_key,
+        "available_count": available_count,
+        "busy_count": busy_count,
+    }
+
+    return render(request, "machines.html", context)
+
+def account(request):
+    return render(request, "account.html")
 
 
 def toggle_machine_status(request, machine_id):
     machine = get_object_or_404(Machine, id=machine_id)
 
-    if machine.status == "available":
-        machine.status = "busy"
-    else:
-        machine.status = "available"
-
+    machine.status = "busy" if machine.status == "available" else "available"
     machine.save()
-    return redirect("machine_list")
 
+    store_key = request.GET.get("store", "gotanda")
+    return redirect(f"/machines/?store={store_key}")
 
 @login_required
-def toggle_today_exercise(request):
-    today = timezone.now().date()
+def add_exercise_log(request):
+    if request.method == "POST":
+        log_date = request.POST.get("date")
+        minutes = int(request.POST.get("minutes", 0))
 
-    log, created = ExerciseLog.objects.get_or_create(
-        user=request.user,
-        date=today,
-        defaults={
-            "minutes": 30,
-            "did_exercise": True,
-        }
-    )
-
-    if not created:
-        log.did_exercise = not log.did_exercise
-        log.minutes = 30 if log.did_exercise else 0
-        log.save()
+        ExerciseLog.objects.update_or_create(
+            user=request.user,
+            date=log_date,
+            defaults={
+                "minutes": minutes,
+                "did_exercise": minutes > 0,
+            }
+        )
 
     return redirect("top")
-
-# ---- 週ごとの運動時間（未使用予定 混乱しないようメモ） ----
-
-def get_weekly_exercise_minutes(user):
-    today = timezone.now().date()
-    start_of_week = today - timedelta(days=today.weekday())
-
-    return ExerciseLog.objects.filter(
-        user=user,
-        date__gte=start_of_week,
-        date__lte=today
-    ).aggregate(total=Sum("minutes"))["total"] or 0

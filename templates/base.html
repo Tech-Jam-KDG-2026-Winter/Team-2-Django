@@ -2,13 +2,26 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{% block title %}TechJam{% endblock %}</title>
+  <meta charset="UTF-8">
+  <title>{% block title %}TechJam Gym{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- 共通CSS -->
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+
+  <!-- 各画面CSS -->
   {% block css %}{% endblock %}
 </head>
+
 <body>
-  {% block content %}{% endblock %}
+  <div class="app-bg">
+    <div class="phone">
+
+      {% block content %}{% endblock %}
+
+      {% include "partials/footer.html" %}
+
+    </div>
+  </div>
 </body>
 </html>

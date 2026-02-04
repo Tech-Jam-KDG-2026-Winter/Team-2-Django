@@ -1,140 +1,151 @@
-/* --- 全体設定 --- */
-body {
-    background-color: #dcdcdc; /* 画面全体をマシンの背景色に */
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
+/* ===== Header ===== */
+
+.machines-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
 }
 
-/* --- コンテナ（外枠なし・横幅いっぱい） --- */
-.iphone-mockup {
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
+.store-name {
+  font-size: 14px;
+  margin: 0;
 }
 
-.screen {
-    width: 100%;
-    max-width: 1200px; /* PCでも広がりすぎないよう最大幅を設定 */
-    padding: 40px 20px;
-    box-sizing: border-box;
+/* 既存の icon-btn を流用 */
+.icon-btn {
+  background: none;
+  border: 1px solid #e5d84c;
+  color: #e5d84c;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  text-align: center;
 }
 
-/* --- ヘッダー --- */
-header {
-    margin-bottom: 30px;
+/* ===== Scroll ===== */
+
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 14px 16px;
 }
 
-.header-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+/* ===== Hint ===== */
+
+.hint {
+  font-size: 12px;
+  opacity: 0.8;
+  margin: 8px 0 12px;
+  text-align: center;
 }
 
-.back-btn {
-    background: #333;
-    color: white;
-    padding: 6px 15px;
-    border-radius: 4px;
-    font-size: 14px;
-    clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 15% 100%, 0% 50%);
+/* ===== Machine List ===== */
+
+.machine-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.shop-name {
-    font-size: 20px;
-    font-weight: normal;
+/* ===== Card ===== */
+
+.machine-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  border-radius: 18px;
+  text-decoration: none;
+  color: #e5d84c;
+  border: 1px solid rgba(229,216,76,0.3);
 }
 
-.title {
-    text-align: center;
-    font-size: 28px;
-    margin: 20px 0;
+/* 状態色 */
+.machine-card.available {
+  background: rgba(229,216,76,0.1);
 }
 
-/* --- グリッド（レスポンシブ設定） --- */
-.machine-grid {
-    display: grid;
-    /* デフォルト（PC）は4列 */
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+.machine-card.busy {
+  background: rgba(255,80,80,0.15);
+  border-color: rgba(255,80,80,0.6);
+  color: #ffb3b3;
 }
 
-/* --- タブレットサイズ（992px以下） --- */
-@media screen and (max-width: 992px) {
-    .machine-grid {
-        grid-template-columns: repeat(3, 1fr); /* 3列に */
-    }
-}
+/* ===== Info ===== */
 
-/* --- スマホサイズ（600px以下） --- */
-@media screen and (max-width: 600px) {
-    .machine-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2列に */
-        gap: 12px;
-    }
-    
-    .title {
-        font-size: 24px;
-    }
-    
-    .screen {
-        padding: 20px 10px;
-    }
+.machine-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
-
 
 .machine-name {
-    font-size: 14px;
-    font-weight: bold;
-    margin: 5px 0;
-    color: #333;
-}
-
-/* --- マシンカードのデザイン（共通） --- */
-.machine-card {
-    background: white;
-    border-radius: 20px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  font-size: 15px;
+  margin: 0;
 }
 
 .difficulty {
-    align-self: flex-end;
-    font-weight: bold;
-    color: #555;
-    font-size: 18px;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  width: fit-content;
 }
 
-.machine-img {
-    font-size: 60px;
-    margin: 15px 0;
+.difficulty.easy {
+  background: rgba(229,216,76,0.3);
 }
+
+.difficulty.hard {
+  background: rgba(255,120,120,0.3);
+}
+
+/* ===== Status ===== */
 
 .status {
-    width: 100%;
-    max-width: 140px;
-    text-align: center;
-    padding: 8px 0;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: bold;
+  font-weight: bold;
+  font-size: 14px;
 }
 
-.available {
-    background-color: #dff0d8;
-    color: #3c763d;
+/* ===== Empty ===== */
+
+.empty {
+  margin-top: 40px;
+  text-align: center;
+  opacity: 0.8;
 }
 
-.occupied {
-    background-color: #f2dede;
-    color: #a94442;
+
+/* ===== Store Tabs ===== */
+
+.store-tabs {
+  display: flex;
+  justify-content: space-around;
+  margin: 6px 14px 8px;
 }
 
-/* ノッチは全画面では不要なので非表示 */
-.notch {
-    display: none;
+.store-tab {
+  flex: 1;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  text-decoration: none;
+  color: #e5d84c;
+  opacity: 0.5;
+  border-bottom: 2px solid transparent;
+}
+
+.store-tab.active {
+  opacity: 1;
+  font-weight: bold;
+  border-color: #e5d84c;
+}
+
+/* ===== Summary ===== */
+
+.machine-summary {
+  font-size: 12px;
+  text-align: center;
+  opacity: 0.8;
+  margin-bottom: 6px;
 }

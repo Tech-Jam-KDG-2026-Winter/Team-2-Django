@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Account{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/account.css' %}">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<header class="account-header">
+  <a href="/" class="back-btn">
+    <span class="material-icons">arrow_back_ios</span>
+  </a>
+
+  <h1 class="account-title">Account</h1>
+
+  <!-- 右側のダミー（中央寄せ用） -->
+  <span class="header-spacer"></span>
+</header>
+
+<div class="scroll-area">
+
+  <!-- ユーザー情報 -->
+  <section class="card account-card">
+    <span class="label">ユーザー</span>
+
+    <div class="avatar">
+      {{ request.user.username|slice:":1"|upper }}
+    </div>
+
+    <h2 class="username">
+      {{ request.user.username }}
+    </h2>
+  </section>
+
+  <!-- QRコード -->
+  <section class="card qr-card main">
+    <span class="label">入店用QRコード</span>
+
+    <div class="qr-box qr-frame">
+      <img src="{% static 'img/qr_dummy.png' %}" alt="QRコード">
+    </div>
+
+    <p class="qr-note">
+      入店時にこちらを提示してください
+    </p>
+  </section>
+
+</div>
+
+{% endblock %}

@@ -1,41 +1,201 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Top Page{% endblock %}
+{% block title %}Top{% endblock %}
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/top.css' %}">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-<div class="phone">
 
-  <div class="menu-icon" >
-    <span></span><span></span><span></span>
-  </div>
+<!-- ヘッダー -->
+<header class="top-header">
+  <a href="/menu/">
+    <button class="icon-btn">☰</button>
+  </a>
+  <h1 class="app-title">TIKA MITI</h1>
+  <button class="icon-btn">●</button>
+</header>
 
-  <div class="center-box">
-    <div class="title">今月の<br>記録</div>
-    <div class="time">
-      <span class="num">00</span><br>
-      <span class="unit">h/min</span>
+<!-- スクロール領域 -->
+<div class="scroll-area">
+
+  <!-- マップ -->
+  <section class="map-section">
+    <div class="map-dummy" id="map">
+
+      <!-- ★ 追加：黒オーバーレイ -->
+      <div class="map-overlay"></div>
+
+      <svg class="route-svg">
+        <polyline id="route-line"></polyline>
+      </svg>
+
+      <div class="you" id="you">現在地</div>
+
+      <button class="store-pin gotanda"
+              data-name="五反田店"
+              data-distance="徒歩3分"
+              data-meters="240">
+        <span class="material-icons">home</span>
+      </button>
+
+      <button class="store-pin meguro"
+              data-name="目黒店"
+              data-distance="徒歩15分"
+              data-meters="1200">
+        <span class="material-icons">home</span>
+      </button>
+
+      <button class="store-pin osaki"
+              data-name="大崎店"
+              data-distance="徒歩9分"
+              data-meters="720">
+        <span class="material-icons">home</span>
+      </button>
+
     </div>
-  </div>
 
-  <div class="item top">
-    <div class="bubble">7分</div>
-    <div class="house"></div>
-  </div>
+    <p class="map-note">
+      店舗ピンをタップすると徒歩ルートが表示されます
+    </p>
+  </section>
 
-  <div class="item left">
-    <div class="bubble">3分</div>
-    <div class="house"></div>
-  </div>
 
-  <div class="item bottom">
-    <div class="bubble">10分</div>
-    <div class="house"></div>
-  </div>
+  <!-- 店舗情報 -->
+  <section class="card">
+    <span class="label">ここから近い店舗</span>
+    <!-- 　距離の表示を実装 -->
+
+    <h2 id="store-name">店舗を選択してください</h2>
+    <p id="store-distance">—</p>
+
+    <div class="btn-group">
+      <a href="/machines/" class="btn primary">マシン空き状況を見る</a>
+    </div>
+  </section>
+
+  <!-- 今月の運動 -->
+  <section class="card exercise-card">
+    <span class="label">今月の運動</span>
+
+    <div class="exercise">
+      <span class="minutes" id="total-minutes">{{ total_exercise }}</span>
+      <span class="unit">分</span>
+    </div>
+
+    <span class="exercise-span">記録をつける</span>
+
+    <form method="post" action="{% url 'add_exercise_log' %}" class="exercise-form" id="exercise-form">
+      {% csrf_token %}
+
+      <label>
+        日付
+        <input type="date" name="date" id="exercise-date" readonly>
+      </label>
+
+      <label>
+        運動時間（分）
+        <input type="number" name="minutes" min="0" step="5" placeholder="例：30">
+      </label>
+
+      <button type="submit" class="btn primary">記録する</button>
+    </form>
+
+    <div class="plus-effect" id="plus-effect">+0分</div>
+  </section>
 
 </div>
+
+
+<script>
+const pins = document.querySelectorAll(".store-pin");
+const routeLine = document.getElementById("route-line");
+const you = document.getElementById("you");
+const map = document.getElementById("map");
+
+const storeName = document.getElementById("store-name");
+const storeDistance = document.getElementById("store-distance");
+
+const form = document.getElementById("exercise-form");
+const dateInput = document.getElementById("exercise-date");
+const totalMinutesEl = document.getElementById("total-minutes");
+const plusEffect = document.getElementById("plus-effect");
+
+/* 店舗ピン */
+const ROUTE_START = {
+  gotanda: { x: 55, y: 118 },
+  meguro:  { x: 50, y: 125 },
+  osaki:   { x: 50, y: 135 },
+};
+
+pins.forEach(pin => {
+  pin.addEventListener("click", () => {
+    pins.forEach(p => p.classList.remove("selected"));
+    pin.classList.add("selected");
+
+    const mapRect = map.getBoundingClientRect();
+    const pinRect = pin.getBoundingClientRect();
+
+    let start = ROUTE_START.meguro;
+    if (pin.classList.contains("gotanda")) start = ROUTE_START.gotanda;
+    if (pin.classList.contains("meguro"))  start = ROUTE_START.meguro;
+    if (pin.classList.contains("osaki"))   start = ROUTE_START.osaki;
+
+    const startX = start.x;
+    const startY = start.y;
+
+    const endX = pinRect.left + pinRect.width / 2 - mapRect.left;
+    const endY = pinRect.top + pinRect.height / 2 - mapRect.top;
+
+    const midX = startX + (endX - startX) * 0.5;
+    const midY = startY + (endY - startY) * 0.5 + 14;
+
+    routeLine.setAttribute(
+      "points",
+      `${startX},${startY} ${midX},${midY} ${endX},${endY}`
+    );
+
+    routeLine.classList.remove("active");
+    void routeLine.offsetWidth;
+    routeLine.classList.add("active");
+
+    storeName.textContent = pin.dataset.name;
+    storeDistance.textContent =
+      `${pin.dataset.distance}（${pin.dataset.meters}m）`;
+  });
+});
+/* 今日の日付 */
+dateInput.value = new Date().toISOString().split("T")[0];
+
+/* 記録アニメ */
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const add = Number(form.minutes.value || 0);
+  if (!add) return form.submit();
+
+  plusEffect.textContent = `+${add}分`;
+  plusEffect.classList.add("show");
+
+  let current = Number(totalMinutesEl.textContent);
+  let target = current + add;
+  let step = Math.max(1, Math.floor(add / 40));
+
+  const timer = setInterval(() => {
+    current += step;
+    if (current >= target) {
+      current = target;
+      clearInterval(timer);
+      totalMinutesEl.textContent = current;
+      setTimeout(() => form.submit(), 300);
+    } else {
+      totalMinutesEl.textContent = current;
+    }
+  }, 20);
+});
+</script>
+
 {% endblock %}

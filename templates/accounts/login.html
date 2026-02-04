@@ -1,92 +1,32 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
 
 {% block content %}
-<style>
-    /* 画面全体 */
-    body {
-        background-color: #272C33 !important;
-        color: #E7D64C !important;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-    }
+<div class="auth-screen">
 
-    .login-card {
-        background-color: rgba(255, 255, 255, 0.03);
-        border: 2px solid #E7D64C;
-        border-radius: 20px;
-        padding: 30px 40px;
-        width: 320px; 
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        text-align: center;
-    }
+  <div class="auth-card">
+    <h1 class="auth-title">LOGIN</h1>
 
-    h1 {
-        font-size: 24px;
-        margin-bottom: 25px;
-        font-weight: bold;
-    }
+    <form method="post" class="auth-form">
+      {% csrf_token %}
+      {{ form.as_p }}
 
-    form p {
-        text-align: left;
-        font-size: 14px;
-        margin-bottom: 15px;
-    }
-
-    input {
-        width: 100%;
-        padding: 12px;
-        margin-top: 5px;
-        background-color: #1e2227;
-        border: 1px solid #444;
-        border-radius: 15px; 
-        color: #fff;
-        box-sizing: border-box;
-    }
-
-    input:focus {
-        border-color: #E7D64C;
-        outline: none;
-    }
-
-    .btn-submit {
-        width: 100%;
-        padding: 12px;
-        margin-top: 10px;
-        background-color: #E7D64C;
-        color: #272C33;
-        border: none;
-        border-radius: 25px;
-        font-weight: bold;
-        font-size: 16px;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .btn-submit:hover {
-        background-color: #f3e46d;
-        transform: scale(1.05); 
-    }
-
-    .footer-links {
-        margin-top: 20px;
-        font-size: 12px;
-    }
-    
-    a { color: #E7D64C; text-decoration: none; }
-</style>
-
-<div class="login-card">
-    <h1>Hello!</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn-submit">Login</button>
+      <button type="submit" class="auth-btn">
+        Login
+      </button>
     </form>
-    <div class="signup-link">
-        新規登録の方は<a href="{% url 'accounts:signup' %}">こちら</a>
+
+    <div class="auth-footer">
+      新規登録の方は
+      <a href="{% url 'accounts:signup' %}">こちら</a>
     </div>
+  </div>
+
 </div>
 {% endblock %}

@@ -1,75 +1,72 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gym Machine List</title>
-    <link rel="stylesheet" href="{% static 'css/machines.css' %}">
-</head>
-<body>
-<div class="iphone-mockup">
-    <div class="screen">
-        
-        <header>
-            <div class="header-top">
-                <div class="back-btn">戻る</div>
-                <h1 class="shop-name">五反田店</h1>
-            </div>
-            <h2 class="title">トレーニングマシン<br>一覧表</h2>
-        </header>
 
-        <div class="machine-grid">
-            <div class="machine-card"><span class="difficulty">easy</span><div class="machine-img">🏋️</div>
-            <p class="machine-name">ランニングマシン</p>
-            <span class="status available">空席中</span></div>
+{% block title %}Machines{% endblock %}
 
-            <div class="machine-card"><span class="difficulty">easy</span><div class="machine-img">🏋️</div>
-            <p class="machine-name">フィットネスバイク</p>
-            <span class="status available">空席中</span></div>
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/machines.css' %}">
+{% endblock %}
 
-            <div class="machine-card"><span class="difficulty">easy</span><div class="machine-img">🏋️</div>
-            <p class="machine-name">クロストレーナー</p>
-            <span class="status occupied">使用中</span></div>
+{% block content %}
 
-            <div class="machine-card"><span class="difficulty">hard</span><div class="machine-img">🏋️</div>
-            <p class="machine-name">ローイングマシン</p>
-            <span class="status available">空席中</span></div>
+<!-- ヘッダー -->
+<header class="machines-header">
+  <a href="/" class="icon-btn">←</a>
+  <h1 class="store-name">{{ store.name }}</h1>
+  <a href="/menu/" class="icon-btn">☰</a>
+</header>
 
-            <div class="machine-card"><span class="difficulty">easy</span><div class="machine-img">🏋️</div>
-            <p class="machine-name">チェストプレス</p>
-            <span class="status available">空席中</span></div>
+<!-- 店舗タブ（A） -->
+<div class="store-tabs">
+  <a href="/machines/?store=gotanda"
+     class="store-tab {% if store_key == 'gotanda' %}active{% endif %}">
+    五反田
+  </a>
+  <a href="/machines/?store=meguro"
+     class="store-tab {% if store_key == 'meguro' %}active{% endif %}">
+    目黒
+  </a>
+  <a href="/machines/?store=osaki"
+     class="store-tab {% if store_key == 'osaki' %}active{% endif %}">
+    大崎
+  </a>
+</div>
 
-            <div class="machine-card"><span class="difficulty">hard</span><div class="machine-img">🏋️</div>
-            <p class="machine-name">ラットプルダウン</p>
-            <span class="status occupied">使用中</span></div>
+<!-- 台数サマリ（B） -->
+<p class="machine-summary">
+  空き <strong>{{ available_count }}</strong> 台 /
+  使用中 <strong>{{ busy_count }}</strong> 台
+</p>
 
-            <div class="machine-card"><span class="difficulty">easy</span><div class="machine-img">🏋️</div>
-            <p class="machine-name">ショルダープレス</p>
-            <span class="status available">空席中</span></div>
+<!-- スクロール -->
+<div class="scroll-area">
 
-            <div class="machine-card"><span class="difficulty">easy</span><div class="machine-img">🏋️</div>
-            <p class="machine-name">ケーブルクロスオーバー</p>
-            <span class="status occupied">使用中</span></div>
+  <p class="hint">
+    タップで「空き / 使用中」を切り替えられます（簡易）
+  </p>
 
-            <div class="machine-card"><span class="difficulty">hard</span><div class="machine-img">🏋️</div>
-            <p class="machine-name">レッグプレス</p>
-            <span class="status available">空席中</span></div>
+  <section class="machine-list">
+    {% for machine in machines %}
+      <a href="{% url 'toggle_machine_status' machine.id %}?store={{ store_key }}"
+         class="machine-card {{ machine.status }}">
 
-            <div class="machine-card"><span class="difficulty">easy</span><div class="machine-img">🏋️</div>
-            <p class="machine-name">レッグエクステンション</p>
-            <span class="status available">空席中</span></div>
-
-            <div class="machine-card"><span class="difficulty">easy</span><div class="machine-img">🏋️</div>
-            <p class="machine-name">レッグカール</p>
-            <span class="status available">空席中</span></div>
-
-            <div class="machine-card"><span class="difficulty">hard</span><div class="machine-img">🏋️</div>
-            <p class="machine-name">アブドミナルクランチ</p>
-            <span class="status available">空席中</span></div>
+        <div class="machine-info">
+          <p class="machine-name">{{ machine.name }}</p>
+          <span class="difficulty {{ machine.difficulty }}">
+            {{ machine.difficulty|upper }}
+          </span>
         </div>
 
-    </div>
+        <span class="status">
+          {% if machine.status == "available" %}空き{% else %}使用中{% endif %}
+        </span>
+
+      </a>
+    {% empty %}
+      <div class="empty">マシンがありません</div>
+    {% endfor %}
+  </section>
+
 </div>
-</body>
-</html>
+
+{% endblock %}
