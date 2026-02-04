@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+{% load dict_extras %}
+{% load static %}
+
+{% block title %}Machines{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/machines.css' %}">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<!-- ヘッダー -->
+<header class="app-header">
+  <a href="/" class="header-btn left">
+    <span class="material-icons">arrow_back</span>
+  </a>
+
+  <h1 class="header-title">{{ store.name }}</h1>
+
+  <a href="/menu/" class="header-btn right">
+    <span class="material-icons">menu</span>
+  </a>
+</header>
+
+<!-- 店舗タブ -->
+<div class="store-tabs">
+  <a href="/machines/?store=gotanda"
+     class="store-tab {% if store_key == 'gotanda' %}active{% endif %}">
+    五反田
+  </a>
+  <a href="/machines/?store=meguro"
+     class="store-tab {% if store_key == 'meguro' %}active{% endif %}">
+    目黒
+  </a>
+  <a href="/machines/?store=osaki"
+     class="store-tab {% if store_key == 'osaki' %}active{% endif %}">
+    大崎
+  </a>
+</div>
+
+<!-- 台数サマリ -->
+<p class="machine-summary">
+  空き <strong>{{ available_count }}</strong> 台 /
+  使用中 <strong>{{ busy_count }}</strong> 台
+</p>
+
+<!-- スクロール -->
+<div class="scroll-area">
+
+  <p class="hint">
+    タップで「空き / 使用中」を切り替えられます
+  </p>
+
+  <section class="machine-list grid">
+
+    {% for machine in machines %}
+      <a href="{% url 'toggle_machine_status' machine.id %}?store={{ store_key }}"
+         class="machine-card {{ machine.status }}">
+
+        <!-- マシン画像 -->
+        <div class="machine-image">
+          {% with img=machine_image_map|get_item:machine.name %}
+            {% if img %}
+              <img src="{% static 'img/machines/' %}{{ img }}" alt="">
+            {% else %}
+              <span class="material-icons machine-icon">fitness_center</span>
+            {% endif %}
+          {% endwith %}
+        </div>
+
+        <!-- 情報 -->
+        <div class="machine-info">
+          <p class="machine-name">{{ machine.name }}</p>
+          <span class="status">
+            {% if machine.status == "available" %}空き{% else %}使用中{% endif %}
+          </span>
+        </div>
+
+      </a>
+    {% endfor %}
+
+  </section>
+
+</div>
+
+{% endblock %}

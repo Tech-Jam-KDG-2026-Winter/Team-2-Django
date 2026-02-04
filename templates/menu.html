@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Menu{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/menu.css' %}">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="menu-screen">
+
+  <!-- ヘッダー -->
+<header class="app-header">
+  <a href="/" class="header-btn left">
+    <span class="material-icons left">arrow_back</span>
+  </a>
+
+  <h1 class="header-title">TITLE</h1>
+
+  <a href="/menu/" class="header-btn right">
+    <span class="material-icons">menu</span>
+  </a>
+</header>
+
+  <!-- メイン -->
+  <main class="menu-main">
+
+    <div class="menu-title">MENU</div>
+
+    <section class="menu-list">
+      <a href="{% url 'account' %}" class="menu-item">
+        <span class="material-icons">person</span>
+        <span class="text">アカウント</span>
+      </a>
+
+
+      <a class="menu-item">
+        <span class="material-icons">help_outline</span>
+        <span class="text">ヘルプ</span>
+      </a>
+    </section>
+
+    <section class="menu-danger">
+      <a href="/accounts/login/" class="menu-item logout">
+        <span class="material-icons">logout</span>
+        <span class="text">ログアウト</span>
+      </a>
+    </section>
+
+  </main>
+
+</div>
+{% endblock %}

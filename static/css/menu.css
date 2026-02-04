@@ -1,0 +1,152 @@
+/* ===== Screen ===== */
+
+.menu-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Header ===== */
+
+.menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+
+  border: 1px solid rgba(229,216,76,0.6);
+  color: #e5d84c;
+  text-decoration: none;
+}
+
+.back-btn .material-icons {
+  font-size: 18px;
+  margin-left: 4px; /* ios矢印のクセ補正 */
+  padding: 10px;
+}
+
+
+.menu-header-title {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.header-spacer {
+  width: 24px;
+}
+
+/* ===== Main ===== */
+
+.menu-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  /* ★ ここがポイント */
+  justify-content: center;
+  transform: translateY(-40px); /* ← 上に持ち上げる */
+  gap: 40px;
+}
+
+/* ===== MENU title ===== */
+
+.menu-title {
+  font-size: 36px;
+  letter-spacing: 6px;
+  font-weight: 600;
+
+  /* ★ グラデ文字 */
+  background: linear-gradient(
+    180deg,
+    #fff6a5 0%,
+    #e5d84c 60%,
+    #cdbb3a 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-shadow:
+    0 2px 8px rgba(229,216,76,0.25);
+}
+
+/* ===== Menu list ===== */
+
+.menu-list,
+.menu-danger {
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ===== Menu item (Card) ===== */
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  padding: 14px 18px;
+  border-radius: 18px;
+
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(229,216,76,0.25);
+
+  color: #e5d84c;
+  text-decoration: none;
+  font-size: 15px;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.menu-item .material-icons {
+  font-size: 22px;
+}
+
+/* hover */
+.menu-item:hover {
+  background: rgba(229,216,76,0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(229,216,76,0.25);
+}
+
+/* ===== Logout ===== */
+
+.menu-item.logout {
+  opacity: 0.6;
+}
+
+.menu-item.logout:hover {
+  background: rgba(255, 80, 80, 0.08);
+  box-shadow: 0 8px 20px rgba(255, 80, 80, 0.3);
+}
+
+
+
+/* ===== Focus ===== */
+
+a {
+  outline: none;
+}
+
+a:focus-visible {
+  box-shadow:
+    0 0 0 2px rgba(229,216,76,0.25),
+    0 0 10px rgba(229,216,76,0.4);
+  border-radius: 18px;
+}

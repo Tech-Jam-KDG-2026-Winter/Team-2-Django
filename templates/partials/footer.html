@@ -1,0 +1,15 @@
+<footer class="tab-bar">
+
+  <a href="/machines/" class="tab {% if 'machines' in request.path %}active{% endif %}">
+    Machines
+  </a>
+  
+  <a href="/" class="tab {% if request.path == '/' %}active{% endif %}">
+    Top
+  </a>
+  
+  <a href="/account/" class="tab {% if 'account' in request.path %}active{% endif %}">
+    Account
+  </a>
+
+</footer>

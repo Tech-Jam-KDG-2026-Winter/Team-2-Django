@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="auth-screen">
+
+  <div class="auth-card">
+    <h1 class="auth-title">LOGIN</h1>
+
+    <form method="post" class="auth-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+
+      <button type="submit" class="auth-btn">
+        Login
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      新規登録の方は
+      <a href="{% url 'accounts:signup' %}">こちら</a>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

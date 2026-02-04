@@ -1,0 +1,199 @@
+* {
+  box-sizing: border-box;
+}
+
+/* ===== Root ===== */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: #1e2227;
+  font-family: "Noto Sans JP", sans-serif;
+}
+
+/* ===== PC背景 ===== */
+.app-bg {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===== スマホ筐体（唯一のサイズ管理者）===== */
+.phone {
+  width: 390px;
+  height: 760px;
+
+  background: linear-gradient(#2a313a, #1f252c);
+  color: #F2E04C;
+
+  border-radius: 32px;
+  box-shadow:
+    0 0 0 2px #F2E04C,
+    0 20px 60px rgba(0,0,0,0.6);
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ===== 実機（スマホ） ===== */
+@media (max-width: 420px) {
+  .phone {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+:root {
+  --neon-yellow: #f6ff7a;
+  --neon-glow: rgba(246, 255, 122, 0.8);
+}
+
+/* ===== App Header (Global) ===== */
+.app-header {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+  padding: 12px 14px;
+}
+
+.header-title {
+  text-align: center;
+  font-size: 16px;
+  letter-spacing: 0.08em;
+}
+
+/* ===== Header Button ===== */
+
+.header-btn {
+  width: 44px;
+  height: 44px;
+
+  position: relative; /* ★ これ重要 */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  color: #e5d84c;
+  text-decoration: none;
+}
+
+
+.header-btn .material-icons {
+  font-size: 18px;
+  line-height: 1;
+  display: block;
+
+  transform: translateY(-0.5px);
+}
+
+.header-btn::before {
+  content: "";
+  position: absolute;
+
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+
+  border: 1px solid rgba(229,216,76,0.6);
+
+  /* ★ 視覚中央に完全固定 */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* アイコンサイズ */
+.header-btn .material-icons {
+  font-size: 18px; /* ← 20 → 18 */
+  position: relative;
+}
+
+
+/* タップ感 */
+.header-btn:active {
+  background: rgba(229,216,76,0.12);
+}
+
+.icon-btn,
+.back-btn {
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+.icon-btn:hover,
+.back-btn:hover {
+  background: rgba(229,216,76,0.08);
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 6px 16px rgba(229,216,76,0.22);
+}
+
+/* ===== スクロール領域（全画面共通）===== */
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 14px 20px;
+}
+
+/* ===== Footer ===== */
+.tab-bar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  padding: 10px 0;
+  border-top: 1px solid rgba(229,216,76,0.3);
+  background: rgba(31, 37, 44, 0.95);
+}
+
+.tab {
+  font-size: 12px;
+  opacity: 0.6;
+  color: #e5d84c;
+  text-decoration: none;
+}
+
+.tab.active {
+  opacity: 1;
+  font-weight: bold;
+}
+
+.card {
+  position: relative;
+  background: rgba(255,255,255,0.02);
+  border-radius: 20px;
+  padding: 14px;
+  margin-top: 16px;
+  overflow: hidden;
+}
+
+/* ★ ガラスハイライト */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+
+  background: linear-gradient(
+    90deg,
+    rgba(229,216,76,0.0),
+    rgba(229,216,76,0.45),
+    rgba(229,216,76,0.0)
+  );
+
+  opacity: 0.6;
+}
