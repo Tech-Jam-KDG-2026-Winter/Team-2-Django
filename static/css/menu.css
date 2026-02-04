@@ -1,7 +1,7 @@
 /* ===== Screen ===== */
 
 .menu-screen {
-  height: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
 }
@@ -32,6 +32,7 @@
 .back-btn .material-icons {
   font-size: 18px;
   margin-left: 4px; /* ios矢印のクセ補正 */
+  padding: 10px;
 }
 
 

@@ -4,10 +4,11 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 
 from .models import Store, Machine, ExerciseLog
+from django.http import JsonResponse
 
 
 def top(request):
-    store = Store.objects.first()
+    stores = Store.objects.all()
 
     today = timezone.now().date()
     start_of_month = today.replace(day=1)
@@ -18,10 +19,18 @@ def top(request):
         date__lte=today
     ).aggregate(total=Sum("minutes"))["total"] or 0
 
+    available_map = {}
+    for store in stores:
+        available_map[store.name] = Machine.objects.filter(
+            store=store,
+            status="available"
+        ).count()
+
     context = {
-        "store": store,
+        "stores": stores,
         "total_exercise": monthly_minutes,
         "today": today,
+        "available_map": available_map,
     }
     return render(request, "top.html", context)
 
@@ -51,12 +60,49 @@ def machine_list(request):
     available_count = machines.filter(status="available").count()
     busy_count = machines.filter(status="busy").count()
 
+    machine_image_map = {
+        "ショルダープレス": "shoulder_press.png",
+        "チェストプレス": "chest_press.png",
+        "ラットプルダウン": "lat_pulldown.png",
+        "アームカール": "arm_curl.png",
+        "ディップス": "dips.png",
+        "レッグプレス": "leg_press.png",
+        "アブベンチ": "ab_bench.png",
+        "トレッドミル": "treadmill.png",
+        "バイク": "bike.png",
+        "セルフエステ":"self_esthe.png",
+        "マッサージチェア":"massage_chair.png",
+        "セルフ脱毛": "hair_removal.png",
+        "ゴルフブース": "golf_booth.png",
+        "セルフホワイトニング": "whitening.png",
+        "セルフネイル": "nail.png",
+
+
+
+    }
+    
+
+    machine_with_image = [ ]
+    for m in machines:
+        image = None
+        for key, img in machine_image_map.items():
+            if key in m.name:
+                image = img
+                break
+
+        machine_with_image.append({
+            "obj": m,
+            "image": image,
+        })
+
+
     context = {
         "store": store,
         "machines": machines,
         "store_key": store_key,
         "available_count": available_count,
         "busy_count": busy_count,
+        "machine_image_map": machine_image_map,
     }
 
     return render(request, "machines.html", context)
@@ -74,19 +120,29 @@ def toggle_machine_status(request, machine_id):
     store_key = request.GET.get("store", "gotanda")
     return redirect(f"/machines/?store={store_key}")
 
+
 @login_required
 def add_exercise_log(request):
     if request.method == "POST":
         log_date = request.POST.get("date")
-        minutes = int(request.POST.get("minutes", 0))
+        add_minutes = int(request.POST.get("minutes", 0))
 
-        ExerciseLog.objects.update_or_create(
+        if add_minutes <= 0:
+            return JsonResponse({"success": False})
+
+        log, _ = ExerciseLog.objects.get_or_create(
             user=request.user,
             date=log_date,
-            defaults={
-                "minutes": minutes,
-                "did_exercise": minutes > 0,
-            }
+            defaults={"minutes": 0, "did_exercise": False}
         )
 
-    return redirect("top")
+        log.minutes += add_minutes
+        log.did_exercise = True
+        log.save()
+
+        return JsonResponse({
+            "success": True,
+            "added": add_minutes,
+        })
+
+    return JsonResponse({"success": False})

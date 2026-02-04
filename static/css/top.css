@@ -1,10 +1,3 @@
-body {
-  margin: 0;
-  background: #1f252c;
-  font-family: "Helvetica Neue", sans-serif;
-}
-
-
 /* ヘッダー */
 .top-header {
   display: flex;
@@ -121,10 +114,33 @@ body {
 
 /* カード */
 .card {
-  background: rgba(255,255,255,0.02);
+  position: relative;
+  background: rgba(255,255,255,0.04);
   border-radius: 20px;
   padding: 14px;
   margin-top: 16px;
+
+  /* ガラス感 */
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.12),
+    inset 0 0 0 1px rgba(229,216,76,0.12),
+    0 12px 30px rgba(0,0,0,0.35);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10px;
+  right: 10px;
+  height: 1px;
+
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(229,216,76,0.6),
+    transparent
+  );
 }
 
 /* 以下すべて無修正 */
@@ -145,6 +161,20 @@ body {
   background: #e5d84c;
   color: #1f252c;
   font-weight: bold;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+/* 押した瞬間 */
+.btn.primary:hover {
+  background: #e8dc55; /* ほんの少し明るく */
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(229,216,76,0.25);
 }
 
 .exercise {
@@ -204,3 +234,28 @@ body {
   to   { opacity: 1; transform: translateY(-20px); }
 }
 
+
+
+/* 店舗距離 + 空き台数 */
+.store-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.available-badge {
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 12px;
+
+  background: rgba(229,216,76,0.12);
+  border: 1px solid rgba(229,216,76,0.35);
+  color: #e5d84c;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.15),
+    0 0 10px rgba(229,216,76,0.15);
+
+  white-space: nowrap;
+}

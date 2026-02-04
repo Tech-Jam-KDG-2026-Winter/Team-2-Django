@@ -11,12 +11,14 @@
 {% block content %}
 
 <!-- ヘッダー -->
-<header class="top-header">
-  <a href="/menu/">
-    <button class="icon-btn">☰</button>
+<header class="app-header">
+  <span></span>
+
+  <h1 class="header-title">TIKAMITI</h1>
+
+  <a href="/menu/" class="header-btn right">
+    <span class="material-icons">menu</span>
   </a>
-  <h1 class="app-title">TIKA MITI</h1>
-  <button class="icon-btn">●</button>
 </header>
 
 <!-- スクロール領域 -->
@@ -26,7 +28,6 @@
   <section class="map-section">
     <div class="map-dummy" id="map">
 
-      <!-- ★ 追加：黒オーバーレイ -->
       <div class="map-overlay"></div>
 
       <svg class="route-svg">
@@ -38,21 +39,24 @@
       <button class="store-pin gotanda"
               data-name="五反田店"
               data-distance="徒歩3分"
-              data-meters="240">
+              data-meters="240"
+              data-available="{{ available_map.五反田店 }}">
         <span class="material-icons">home</span>
       </button>
 
       <button class="store-pin meguro"
               data-name="目黒店"
               data-distance="徒歩15分"
-              data-meters="1200">
+              data-meters="1200"
+              data-available="{{ available_map.目黒店 }}">
         <span class="material-icons">home</span>
       </button>
 
       <button class="store-pin osaki"
               data-name="大崎店"
               data-distance="徒歩9分"
-              data-meters="720">
+              data-meters="720"
+              data-available="{{ available_map.大崎店 }}">
         <span class="material-icons">home</span>
       </button>
 
@@ -63,14 +67,16 @@
     </p>
   </section>
 
-
   <!-- 店舗情報 -->
   <section class="card">
     <span class="label">ここから近い店舗</span>
-    <!-- 　距離の表示を実装 -->
 
     <h2 id="store-name">店舗を選択してください</h2>
-    <p id="store-distance">—</p>
+
+    <div class="store-meta">
+      <p id="store-distance">—</p>
+      <span class="available-badge" id="store-available">—</span>
+    </div>
 
     <div class="btn-group">
       <a href="/machines/" class="btn primary">マシン空き状況を見る</a>
@@ -88,7 +94,12 @@
 
     <span class="exercise-span">記録をつける</span>
 
-    <form method="post" action="{% url 'add_exercise_log' %}" class="exercise-form" id="exercise-form">
+    <!-- ★ onsubmit で完全ガード -->
+    <form method="post"
+          action="{% url 'add_exercise_log' %}"
+          class="exercise-form"
+          id="exercise-form"
+          onsubmit="return false;">
       {% csrf_token %}
 
       <label>
@@ -109,22 +120,22 @@
 
 </div>
 
-
 <script>
 const pins = document.querySelectorAll(".store-pin");
 const routeLine = document.getElementById("route-line");
-const you = document.getElementById("you");
 const map = document.getElementById("map");
 
 const storeName = document.getElementById("store-name");
 const storeDistance = document.getElementById("store-distance");
+const storeAvailable = document.getElementById("store-available");
 
 const form = document.getElementById("exercise-form");
 const dateInput = document.getElementById("exercise-date");
 const totalMinutesEl = document.getElementById("total-minutes");
 const plusEffect = document.getElementById("plus-effect");
 
-/* 店舗ピン */
+/* ---------- 店舗ピン ---------- */
+
 const ROUTE_START = {
   gotanda: { x: 55, y: 118 },
   meguro:  { x: 50, y: 125 },
@@ -165,18 +176,38 @@ pins.forEach(pin => {
     storeName.textContent = pin.dataset.name;
     storeDistance.textContent =
       `${pin.dataset.distance}（${pin.dataset.meters}m）`;
+    storeAvailable.textContent =
+      `空き ${pin.dataset.available} 台`;
   });
 });
-/* 今日の日付 */
+
+/* ---------- 今日の日付 ---------- */
+
 dateInput.value = new Date().toISOString().split("T")[0];
 
-/* 記録アニメ */
-form.addEventListener("submit", (e) => {
+/* ---------- 運動記録（非同期・遷移なし） ---------- */
+
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  e.stopPropagation();
 
   const add = Number(form.minutes.value || 0);
-  if (!add) return form.submit();
+  if (add <= 0) return;
 
+  const formData = new FormData(form);
+
+  const res = await fetch(form.action, {
+    method: "POST",
+    headers: {
+      "X-CSRFToken": formData.get("csrfmiddlewaretoken"),
+    },
+    body: formData,
+  });
+
+  const data = await res.json();
+  if (!data.success) return;
+
+  // 加算アニメーション
   plusEffect.textContent = `+${add}分`;
   plusEffect.classList.add("show");
 
@@ -190,7 +221,9 @@ form.addEventListener("submit", (e) => {
       current = target;
       clearInterval(timer);
       totalMinutesEl.textContent = current;
-      setTimeout(() => form.submit(), 300);
+      plusEffect.classList.remove("show");
+      form.reset();
+      dateInput.value = new Date().toISOString().split("T")[0];
     } else {
       totalMinutesEl.textContent = current;
     }
