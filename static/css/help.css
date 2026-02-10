@@ -1,0 +1,32 @@
+/* ================================
+   Help page text hierarchy tuning
+   ================================ */
+
+/* タイトル（label） */
+.card .label {
+  font-weight: 600;
+  margin-bottom: 10px;
+  letter-spacing: 0.04em;
+}
+
+/* 本文 */
+.card p {
+  margin: 0;
+  margin-left: 1.2em;        /* ← ★ここが超重要：段を下げる */
+  line-height: 1.75;
+  letter-spacing: 0.02em;
+  color: rgba(202, 190, 65, 0.85); /* ← 少しだけ暗く */
+}
+
+/* 本文が続く場合 */
+.card p + p {
+  margin-top: 8px;
+}
+
+/* 注釈 */
+.card .hint {
+  margin-top: 6px;
+  margin-left: 1.2em;        /* ← 本文と揃える */
+  font-size: 12px;
+  opacity: 0.65;
+}
