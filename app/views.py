@@ -111,6 +111,10 @@ def account(request):
     return render(request, "account.html")
 
 
+def help_view(request):
+    return render(request, "help.html")
+
+
 def toggle_machine_status(request, machine_id):
     machine = get_object_or_404(Machine, id=machine_id)
 

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+{% load dict_extras %}
+{% load static %}
+
+{% block title %}Machines{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/help.css' %}">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<!-- ヘッダー -->
+<header class="app-header">
+  <a href="/" class="header-btn left">
+    <span class="material-icons">arrow_back</span>
+  </a>
+
+    <h1 class="header-title">Help</h1>
+
+  <a href="/menu/" class="header-btn right">
+    <span class="material-icons">menu</span>
+  </a>
+</header>
+
+
+
+<div class="scroll-area">
+
+  <!-- このアプリについて -->
+  <section class="card">
+    <span class="label">ヘルプ / このアプリの使い方</span>
+    <p>
+      当アプリは<br>
+      2月の展示期間中のみ体験いただける<br>
+      プロトタイプアプリです。
+    </p>
+  </section>
+
+  <!-- ① まずは触ってみて -->
+  <section class="card">
+    <span class="label">① まずはそのまま触ってみてください</span>
+    <p>
+      当アプリは、アカウントを作成しなくても<br>
+      店舗表示/マシン空き状況/ルート表示を
+      ご利用いただけます。
+    </p>
+  </section>
+
+  <!-- ② 運動記録 -->
+  <section class="card">
+    <span class="label">② 運動記録を使いたい方へ</span>
+    <p>
+      「今月の運動累計」や記録機能は、<br>
+      アカウント作成後にご利用いただけます。
+    </p>
+  </section>
+
+  <!-- ③ デモ用アカウント -->
+  <section class="card">
+    <span class="label">③ デモ用アカウントについて</span>
+    <p>
+      展示・体験用として、架空の情報で<br>
+      アカウント登録が可能です。
+    </p>
+    <p>
+      例：<br>
+      ユーザー名：TIKA-CHAN<br>
+      メール：tikamiti@demo.com
+    </p>
+    <p class="hint">
+      ※ パスワードは要件を満たす必要があります
+    </p>
+  </section>
+
+  <!-- ④ ログアウト / 新規登録 -->
+  <section class="card">
+    <span class="label">④ ログアウト・新規登録の方法</span>
+    <p>
+      Menu → ログアウト から
+      新規登録画面へ進むことができます。
+    </p>
+  </section>
+
+</div>
+
+{% endblock %}
