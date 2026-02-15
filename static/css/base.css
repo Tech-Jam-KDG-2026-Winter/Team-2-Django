@@ -197,3 +197,17 @@ html, body {
 
   opacity: 0.6;
 }
+
+
+/* ===== Mobile only ===== */
+@media (max-width: 600px) {
+
+  body {
+    align-items: flex-start; /* 中央寄せやめる */
+  }
+
+  .phone {
+    margin-top: env(safe-area-inset-top);
+  }
+
+}
